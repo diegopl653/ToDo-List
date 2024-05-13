@@ -1,0 +1,17 @@
+.addtask {
+    display: flex;
+    gap: 2em;
+}
+.addtask input {
+    width: 20rem;
+}
+.lista {
+    text-align: start;
+    color: black;
+    padding: 2em 3em;
+    width: 50%;
+}
+h2 {
+    color: white;
+    margin: 0;
+}
