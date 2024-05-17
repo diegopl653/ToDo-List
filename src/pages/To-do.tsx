@@ -1,20 +1,24 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addTask, removeTask } from "../Slices/counterSlice";
+import {
+  addTask,
+  removeTask,
+  completeTask,
+  uncompleteTask,
+} from "../Slices/counterSlice";
 import type { RootState } from "../app/store";
 import TaskCard from "../components/TaskCard";
 import "./styles/to-do.css";
 import { useState } from "react";
 
 function TodoList() {
-  const [inputValue, setInputValue] = useState("")
+  const [inputValue, setInputValue] = useState("");
   const dispatch = useDispatch();
   const values = useSelector((state: RootState) => state.counter.values);
+  const completed = useSelector((state: RootState) => state.counter.completed);
 
   const handleTaskRemove = (id: number) => {
     const task = id.toString();
-    console.log(values)
     dispatch(removeTask(task));
-    console.log(values)
   };
 
   return (
@@ -27,7 +31,12 @@ function TodoList() {
           e.preventDefault();
         }}
       >
-        <input type="text" onChange={(e) => {setInputValue(e.target.value)}}/>
+        <input
+          type="text"
+          onChange={(e) => {
+            setInputValue(e.target.value);
+          }}
+        />
         <button
           type="submit"
           aria-label="increment-value"
@@ -46,11 +55,12 @@ function TodoList() {
           <h2>To-Do</h2>
           {values.map((value, index) => (
             <TaskCard
+              key={index}
               value={value}
               id={index}
               onChange={(index) => {
                 handleTaskRemove(index);
-                console.log(index);
+                dispatch(completeTask(value));
               }}
               checked={false}
             ></TaskCard>
@@ -58,6 +68,17 @@ function TodoList() {
         </ul>
         <ul className="lista">
           <h2>Completed</h2>
+          {completed.map((value, index) => (
+            <TaskCard
+              key={index}
+              value={value}
+              id={index}
+              onChange={(index) => {
+                dispatch(uncompleteTask(index));
+              }}
+              checked={true}
+            ></TaskCard>
+          ))}
         </ul>
       </section>
     </div>

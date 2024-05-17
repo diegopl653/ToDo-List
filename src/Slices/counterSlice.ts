@@ -24,6 +24,7 @@ export const addingSlice = createSlice({
         console.log("indice", indice)
       }
     },
+
     removeTask: (state, action) => {
       const indexToRemove = action.payload;
       console.log("index",indexToRemove)
@@ -31,16 +32,25 @@ export const addingSlice = createSlice({
         state.values.splice(indexToRemove, 1)
       }
     },
-    completeTask: () => {
 
+    completeTask: (state, action) => {
+      const task = action.payload;
+      console.log("valordecomplete", task)
+      state.completed.push(task);
+      console.log("hola", task)
     },
-    uncompleteTask: () => {
-
+    
+    uncompleteTask: (state, action) => {
+      const indexToRemove = action.payload;
+      console.log("index",indexToRemove)
+      if (indexToRemove !== -1) {
+        state.completed.splice(indexToRemove, 1)
+      }
     },
 
   },
 });
 
-export const { addTask, removeTask } = addingSlice.actions;
+export const { addTask, removeTask, completeTask, uncompleteTask } = addingSlice.actions;
 
 export default addingSlice.reducer;
