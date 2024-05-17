@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface AddingState {
   values: string[];
+  completed: string[];
 }
 
 const initialState: AddingState = {
   values: [],
+  completed: [],
 };
 
 export const addingSlice = createSlice({
@@ -13,18 +15,29 @@ export const addingSlice = createSlice({
   initialState,
   reducers: {
     addTask: (state, action) => {
-      state.values.push(action.payload);
-    },
-    removeTask: (state, action) => {
-      const indexToRemove = state.values.indexOf(action.payload);
-      if (indexToRemove !== -1) {
-        state.values.splice(indexToRemove);
+      const task = action.payload;
+      if(state.values.includes(task)){
+        alert("Ya añadiste esa Tarea, agrega otra")
+      }else{
+        state.values.push(task);
+        const indice = state.values.indexOf(action.payload)
+        console.log("indice", indice)
       }
     },
-    getTasks: (state) => {
-        const valuesArray = state.values; 
-      return valuesArray;
+    removeTask: (state, action) => {
+      const indexToRemove = action.payload;
+      console.log("index",indexToRemove)
+      if (indexToRemove !== -1) {
+        state.values.splice(indexToRemove, 1)
+      }
     },
+    completeTask: () => {
+
+    },
+    uncompleteTask: () => {
+
+    },
+
   },
 });
 
