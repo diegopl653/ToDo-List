@@ -4,6 +4,8 @@ import {
   removeTask,
   completeTask,
   uncompleteTask,
+  removeCompleteTask,
+  editTask,
 } from "../Slices/counterSlice";
 import type { RootState } from "../app/store";
 import TaskCard from "../components/TaskCard";
@@ -14,7 +16,7 @@ function TodoList() {
   const [inputValue, setInputValue] = useState("");
   const dispatch = useDispatch();
   const values = useSelector((state: RootState) => state.counter.values);
-  const completed = useSelector((state: RootState) => state.counter.completed);
+  const complete = useSelector((state: RootState) => state.counter.complete);
 
   const handleTaskRemove = (id: number) => {
     const task = id.toString();
@@ -56,27 +58,41 @@ function TodoList() {
           {values.map((value, index) => (
             <TaskCard
               key={index}
-              value={value}
+              value={value.task}
               id={index}
               onChange={(index) => {
                 handleTaskRemove(index);
-                dispatch(completeTask(value));
+                dispatch(completeTask(value.task));
+                console.log(value.task)
               }}
               checked={false}
+              onClick={(index) => {
+                handleTaskRemove(index);
+              }}
+              Edit={(index) => {
+                console.log("Edit", index);
+                dispatch(editTask(index));
+              }}
             ></TaskCard>
           ))}
         </ul>
         <ul className="lista">
           <h2>Completed</h2>
-          {completed.map((value, index) => (
+          {complete.map((value, index) => (
             <TaskCard
               key={index}
-              value={value}
+              value={value.task}
               id={index}
               onChange={(index) => {
                 dispatch(uncompleteTask(index));
+                dispatch(removeCompleteTask(index.toString()))
               }}
               checked={true}
+              onClick={(index) => {
+                const taskComplete = index.toString();
+                dispatch(removeCompleteTask(taskComplete));
+              }}
+              Edit={() => {}}
             ></TaskCard>
           ))}
         </ul>
